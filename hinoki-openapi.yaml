@@ -1,0 +1,91 @@
+openapi: 3.0.1
+info:
+  title: Hinoki KPI API
+  version: "1.0.0"
+servers:
+  - url: https://api.hinoki.vn
+paths:
+  /kpi/weekly:
+    get:
+      operationId: getWeeklyKPI
+      summary: Lấy KPI tuyển sinh & doanh thu theo tuần
+      description: |
+        Trả về KPI theo khoảng ngày. Nếu truyền `center`, sẽ lọc theo mã cơ sở (ví dụ HNK-HCM-01).
+      parameters:
+        - in: query
+          name: start
+          schema: { type: string, format: date }
+          required: true
+          description: Ngày bắt đầu (YYYY-MM-DD)
+        - in: query
+          name: end
+          schema: { type: string, format: date }
+          required: true
+          description: Ngày kết thúc (YYYY-MM-DD)
+        - in: query
+          name: center
+          schema: { type: string }
+          required: false
+          description: Mã cơ sở (tuỳ chọn)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  week:
+                    type: string
+                    example: "2025-09-01..2025-09-07"
+                  centers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        center: { type: string, example: "HNK-HCM-01" }
+                        leads: { type: integer, example: 540 }
+                        enrollments: { type: integer, example: 130 }
+                        revenue: { type: number, example: 650000000 }
+                        cr: { type: number, example: 0.24, description: "tỉ lệ chốt = enrollments/leads" }
+        "400": { description: Bad request }
+        "401": { description: Unauthorized }
+        "429": { description: Rate limited }
+        "500": { description: Server error }
+
+  /nps/weekly:
+    get:
+      operationId: getWeeklyNPS
+      summary: Lấy NPS theo tuần
+      parameters:
+        - in: query
+          name: start
+          schema: { type: string, format: date }
+          required: true
+        - in: query
+          name: end
+          schema: { type: string, format: date }
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  week: { type: string, example: "2025-09-01..2025-09-07" }
+                  nps: { type: number, example: 68 }
+                  responses: { type: integer, example: 312 }
+        "401": { description: Unauthorized }
+        "429": { description: Rate limited }
+        "500": { description: Server error }
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+security:
+  - ApiKeyAuth: []
