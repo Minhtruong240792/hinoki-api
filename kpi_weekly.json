@@ -1,0 +1,12 @@
+{
+  "week": "2025-09-01..2025-09-07",
+  "centers": [
+    {
+      "center": "HNK-HCM-01",
+      "leads": 540,
+      "enrollments": 130,
+      "revenue": 650000000,
+      "cr": 0.24
+    }
+  ]
+}

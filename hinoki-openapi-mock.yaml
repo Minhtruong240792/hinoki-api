@@ -1,0 +1,59 @@
+openapi: 3.1.0
+info:
+  title: Hinoki KPI API (Mock via GitHub Pages)
+  version: "1.0.0"
+servers:
+  - url: https://minhtruong240792.github.io/hinoki-api
+paths:
+  /kpi_weekly.json:
+    get:
+      operationId: getWeeklyKPI
+      summary: (Mock) Lấy KPI tuyển sinh & doanh thu theo tuần
+      description: Trả về dữ liệu mẫu tĩnh để kiểm thử GPT Actions khi backend chưa sẵn sàng.
+      parameters:
+        - in: query
+          name: start
+          schema: { type: string, format: date }
+          required: false
+        - in: query
+          name: end
+          schema: { type: string, format: date }
+          required: false
+        - in: query
+          name: center
+          schema: { type: string }
+          required: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  week: { type: string }
+                  centers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        center: { type: string }
+                        leads: { type: integer }
+                        enrollments: { type: integer }
+                        revenue: { type: number }
+                        cr: { type: number }
+  /nps_weekly.json:
+    get:
+      operationId: getWeeklyNPS
+      summary: (Mock) Lấy NPS theo tuần
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  week: { type: string }
+                  nps: { type: number }
+                  responses: { type: integer }
